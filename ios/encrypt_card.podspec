@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'encrypt_card'
-  s.version          = '0.0.4'
+  s.version          = '0.0.7'
   s.summary          = 'An Adyen Flutter plugin to support the Adyen API integration inspired in adyen_flutter https://github.com/lab-box/adyen_flutter.'
   s.description      = <<-DESC
   An Adyen Flutter plugin to support the Adyen API integration inspired in adyen_flutter https://github.com/lab-box/adyen_flutter.

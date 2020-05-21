@@ -1,6 +1,18 @@
+## 0.0.7
+
+* Return void credit card if error. 
+
+## 0.0.6
+
+* Android imports updated
+
+## 0.0.5
+
+* Return an exception on android
+
 ## 0.0.4
 
-* Return coid credit card if error. 
+* Return void credit card if error. 
 
 ## 0.0.3
 

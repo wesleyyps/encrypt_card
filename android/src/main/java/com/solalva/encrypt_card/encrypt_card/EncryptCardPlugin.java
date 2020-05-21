@@ -174,7 +174,16 @@ public class EncryptCardPlugin implements MethodCallHandler {
               }
           } catch (Exception ex) {
               return "";
-              //throw new Error("Could not get the publicKey from token:''" + publicKeyToken + "'");
+              //throw new Error("Could not get the publicKey from token: " + publicKeyToken 
+              //+ "***************************************************************"
+              //+ " ACTIVITY= " + this.activity.getApplication().toString()
+              //+ "***************************************************************"
+              //+ " HOSTPROVIDER= " + hostProvider
+              //+ "***************************************************************"
+              //+ " PUBLICKEYTOKEN= " + publicKeyToken 
+              //+ "***************************************************************"
+              //+ ex.toString() 
+              //+ "***************************************************************");
           }
       }
       return publicKey;
