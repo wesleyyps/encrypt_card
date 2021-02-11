@@ -106,7 +106,7 @@ public class EncryptCardPlugin implements MethodCallHandler {
           CardEncryptor encryptor = new CardEncryptorImpl();
           return encryptor.encrypt(holderName, card, generationDate, publicKey).call();
       } catch (Exception ex) {
-          throw new Error("Could not encrypt the card", ex);
+          return "";//throw new Error("Could not encrypt the card", ex);
       }
   }
 
