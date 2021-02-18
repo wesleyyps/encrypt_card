@@ -7,13 +7,13 @@ class EncryptCard {
   /// Encrypts Card information into a single token after requesting a public token from your [publicKeyToken].
   /// It requires your [publicKeyToken], [card] and a [generationDate].
   static Future<String> encryptedToken(
-      {String publicKeyToken,
-      Environment environment = Environment.TEST,
+      {String publicKey,
       String holderName,
       CreditCard card,
       DateTime generationDate}) async {
-    ArgumentError.checkNotNull(publicKeyToken, 'publicKeyToken');
+    ArgumentError.checkNotNull(publicKey, 'publicKey');
     ArgumentError.checkNotNull(generationDate, 'generationDate');
+    ArgumentError.checkNotNull(holderName, 'holderName');
     ArgumentError.checkNotNull(card, 'card');
     ArgumentError.checkNotNull(card.number, 'card.number');
     ArgumentError.checkNotNull(card.securityCode, 'card.securityCode');
@@ -22,57 +22,16 @@ class EncryptCard {
 
     try {
       return await _channel.invokeMethod('encryptedToken', <String, dynamic>{
-        'publicKeyToken': publicKeyToken,
+        'publicKey': publicKey,
         'cardNumber': card.number,
         'cardSecurityCode': card.securityCode,
         'cardExpiryMonth': card.expiryMonth,
         'cardExpiryYear': card.expiryYear,
-        'environment': environment.toString().split('.')[1],
         'holderName': holderName,
         'generationDate': generationDate.toIso8601String()
       });
     } catch (ex) {
       throw Exception('Could not encrypt the token from the card:$ex');
-    }
-  }
-
-  /// Encrypts Card information into an Encrypted card after requesting a public token from your [publicKeyToken].
-  /// It requires your [publicKeyToken], [card] and a [generationDate].
-  static Future<CreditCard> encryptedCard(
-      {String publicKeyToken,
-      Environment environment = Environment.TEST,
-      CreditCard card,
-      DateTime generationDate}) async {
-    ArgumentError.checkNotNull(publicKeyToken, 'publicKeyToken');
-    ArgumentError.checkNotNull(generationDate, 'generationDate');
-    ArgumentError.checkNotNull(card, 'card');
-    ArgumentError.checkNotNull(card.number, 'card.number');
-    ArgumentError.checkNotNull(card.securityCode, 'card.securityCode');
-    ArgumentError.checkNotNull(card.expiryMonth, 'card.expiryMonth');
-    ArgumentError.checkNotNull(card.expiryYear, 'card.expiryYear');
-    try {
-      final Map<dynamic, dynamic> results =
-          await _channel.invokeMethod('encryptedCard', <String, dynamic>{
-        'publicKeyToken': publicKeyToken,
-        'cardNumber': card.number,
-        'cardSecurityCode': card.securityCode,
-        'cardExpiryMonth': card.expiryMonth,
-        'cardExpiryYear': card.expiryYear,
-        'environment': environment.toString().split('.')[1],
-        'generationDate': generationDate.toIso8601String()
-      });
-      var encryptedNumber = results['encryptedNumber'];
-      var encryptedSecurityCode = results['encryptedSecurityCode'];
-      var encryptedExpiryMonth = results['encryptedExpiryMonth'];
-      var encryptedExpiryYear = results['encryptedExpiryYear'];
-      return CreditCard(
-          number: encryptedNumber,
-          securityCode: encryptedSecurityCode,
-          expiryMonth: encryptedExpiryMonth,
-          expiryYear: encryptedExpiryYear);
-    } catch (ex) {
-      return CreditCard(number: "", securityCode: "", expiryMonth: "", expiryYear: "");
-      //throw new Exception("Could not encrypt the card from the input card:$ex");
     }
   }
 }
@@ -87,7 +46,7 @@ class CreditCard {
   final String securityCode;
 
   ///The card expiry Month.
-  ///Valid Value are [1-12]
+  ///Valid Value are [01-12]
   final String expiryMonth;
 
   ///The card expiry year.
