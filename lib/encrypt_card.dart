@@ -7,10 +7,13 @@ class EncryptCard {
   /// Encrypts Card information into a single token after requesting a public token from your [publicKeyToken].
   /// It requires your [publicKeyToken], [card] and a [generationDate].
   static Future<String> encryptedToken(
-      {String publicKey,
+      {String publicKeyToken,
+      String publicKey,
+      Environment environment = Environment.TEST,
       String holderName,
       CreditCard card,
       DateTime generationDate}) async {
+    ArgumentError.checkNotNull(publicKeyToken, 'publicKeyToken');
     ArgumentError.checkNotNull(publicKey, 'publicKey');
     ArgumentError.checkNotNull(generationDate, 'generationDate');
     ArgumentError.checkNotNull(holderName, 'holderName');
@@ -22,11 +25,13 @@ class EncryptCard {
 
     try {
       return await _channel.invokeMethod('encryptedToken', <String, dynamic>{
+        'publicKeyToken': publicKeyToken,
         'publicKey': publicKey,
         'cardNumber': card.number,
         'cardSecurityCode': card.securityCode,
         'cardExpiryMonth': card.expiryMonth,
         'cardExpiryYear': card.expiryYear,
+        'environment': environment.toString().split('.')[1],
         'holderName': holderName,
         'generationDate': generationDate.toIso8601String()
       });
